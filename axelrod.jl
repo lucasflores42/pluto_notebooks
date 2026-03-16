@@ -206,8 +206,6 @@ end
 # ╔═╡ 820a390f-2b9b-4098-a602-afd04f35af0e
 begin
 
-    local ranking_md = ""
-
     # RESET TOURNAMENT
     if reset > game.last_reset
 
@@ -230,6 +228,7 @@ begin
         game.last_play_D = play_D
 
         game.last_reset = reset
+        display("Tournament reset.")
 
     end
 
@@ -242,7 +241,6 @@ begin
         your_choice = "D"
         game.last_play_D = play_D
     end
-
 
     # play turn
     if your_choice !== nothing && game.current_strategy <= length(strategies)
@@ -263,14 +261,22 @@ begin
 
         game.turn += 1
 
+        display("Strategy $(game.current_strategy) vs you")
+        display("Turn $(game.turn)")
+        display("You chose $your_choice")
+        display("Opponent chose $opponent_choice")
+        display("Your score: $(game.your_score)")
+        display("Opponent score: $(game.opponent_score)")
+        display("Your history: $(game.your_history)")
+        display("Opponent history: $(game.opponent_history)")
+
     end
 
-	last_turn = game.turn == game.turns_per_match
-	final_you = game.your_score
-	final_opp = game.opponent_score
-	
     # END OF MATCH
     if game.turn == game.turns_per_match
+
+        display("\nMatch finished against strategy $(game.current_strategy)")
+        display("Final score: $(game.your_score) vs $(game.opponent_score)")
 
         push!(game.your_vs_strategy_scores, game.your_score)
         push!(game.strategy_vs_you_scores, game.opponent_score)
@@ -289,30 +295,36 @@ begin
 
     end
 
-    tournament_finished = game.current_strategy > length(strategies)
+    # END OF TOURNAMENT
+    if game.current_strategy > length(strategies)
 
-	# --------------------------------------------------------------------------
-    # 					strategy vs strategy tournament
-	# --------------------------------------------------------------------------
+        display("\nTOURNAMENT FINISHED\n")
+        total_score = sum(game.your_vs_strategy_scores)
+        display("Total score: $total_score")
+    end
+
+    # calculate rest of tournament (strategies vs strategies)
     if length(game.your_vs_strategy_scores) == length(strategies)
+
+        display("\nRunning strategy vs strategy matches...\n")
 
         n = length(strategies)
         strategy_scores = zeros(Int, n)
 
         for i in 1:n
             for j in i+1:n
-
                 prev1 = nothing
                 prev2 = nothing
                 score1 = 0
                 score2 = 0
 
                 for t in 1:game.turns_per_match
-
+                    # strategy i move
                     s1 = strategies[i]
                     prob1 = s1(prev1, prev2)
                     move1 = rand() < prob1 ? "C" : "D"
 
+                    # strategy j move
                     s2 = strategies[j]
                     prob2 = s2(prev2, prev1)
                     move2 = rand() < prob2 ? "C" : "D"
@@ -327,55 +339,37 @@ begin
                 strategy_scores[i] += score1
                 strategy_scores[j] += score2
 
+                display("Match $(nameof(strategies[i])) vs $(nameof(strategies[j]))")
+                display("Score: $score1 vs $score2\n")
             end
         end
 
+        display("================================")
+        display("         FINAL RANKING ")
+        display("================================")
 
-        local strategy_names = String[]
-        local scores = Int[]
+        names = String[]
+        scores = Int[]
 
-        push!(strategy_names, "YOU")
+        # add you
+        push!(names, "YOU")
         push!(scores, sum(game.your_vs_strategy_scores))
 
+        # add strategies
         for i in 1:n
             total = strategy_scores[i] + game.strategy_vs_you_scores[i]
-            push!(strategy_names, string(nameof(strategies[i])))
+            push!(names, string(nameof(strategies[i])))
             push!(scores, total)
         end
 
+        # sort by score (descending)
         order = sortperm(scores, rev=true)
 
-        ranking_md = "| Rank | Strategy | Score |\n|---|---|---|\n"
-
-        for (rank,k) in enumerate(order)
-            ranking_md *= "| $rank | $(strategy_names[k]) | $(scores[k]) |\n"
+        for k in order
+            display("$(names[k]) → $(scores[k])")
         end
 
     end
-
-	your_hist = join(game.your_history, " ")
-	opp_hist = join(game.opponent_history, " ")
-	
-    md"""
-	**You vs Strategy $(game.current_strategy)**
-	
-	**Turn:** $(game.turn)
-	
-	| Player | Score |
-	|--------|------|
-	| You | $(game.your_score) |
-	| Opponent | $(game.opponent_score) |
-
-
-	**Your history**:     $(your_hist) 
-	
-	**Opponent history**: $(opp_hist)
-
-	$(last_turn ? "**Match finished — Final score: You $(final_you) vs Opponent $(final_opp)**" : "")
-	
-	$(Markdown.parse(ranking_md))
-	
-	"""
 
 end
 
