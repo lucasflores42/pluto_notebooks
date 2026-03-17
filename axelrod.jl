@@ -75,9 +75,6 @@ md"""
 # ╔═╡ f2b52ce7-73a5-42d3-8055-7cb02cc06f98
 @bind reset CounterButton("Reset")
 
-# ╔═╡ c0f34c37-7d82-4449-b400-b8e01d1e73b6
-play_C
-
 # ╔═╡ af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 md"""
 ## Code
@@ -642,7 +639,6 @@ version = "17.4.0+2"
 # ╟─b00f0dc0-a067-4507-bfd5-36ae600d63b5
 # ╟─0a792571-0b43-49b2-bea3-8daf6a3dbd9c
 # ╟─f2b52ce7-73a5-42d3-8055-7cb02cc06f98
-# ╠═c0f34c37-7d82-4449-b400-b8e01d1e73b6
 # ╟─820a390f-2b9b-4098-a602-afd04f35af0e
 # ╟─af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 # ╠═6f73fb90-1fe2-11f1-0414-11d86a3ffab9
