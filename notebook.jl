@@ -24,7 +24,7 @@ md"""
 
 # ╔═╡ 3be1939d-c75b-4e1c-a07f-1475f5e8ba56
 md"""
-This is a post related to the paper from my internship in the Max Planck for Evolutionary Biology (doi.org/10.1038/s44260-025-00035-1), a colaboration with Amanda de Azevedo-Lopes, Chadi M. Saad-Roy, and Arne Traulsen.
+This is a post related to the paper from my internship in the Max Planck for Evolutionary Biology (doi.org/10.1038/s44260-025-00035-1), a collaboration with Amanda de Azevedo-Lopes, Chadi M. Saad-Roy, and Arne Traulsen.
 
 We investigated the interplay between disease dynamics and human behavior by coupling a classic SIRS epidemiological model with individual decision-making, revealing that adherence to NPIs among individuals fluctuate seasonally in response to the infection, leading to cyclical social dilemmas.
 """
