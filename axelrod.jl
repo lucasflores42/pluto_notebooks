@@ -75,6 +75,9 @@ md"""
 # ╔═╡ f2b52ce7-73a5-42d3-8055-7cb02cc06f98
 @bind reset CounterButton("Reset")
 
+# ╔═╡ c0f34c37-7d82-4449-b400-b8e01d1e73b6
+play_C
+
 # ╔═╡ af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 md"""
 ## Code
@@ -228,7 +231,7 @@ begin
         game.last_play_D = play_D
 
         game.last_reset = reset
-        display("Tournament reset.")
+        println("Tournament reset.")
 
     end
 
@@ -261,22 +264,22 @@ begin
 
         game.turn += 1
 
-        display("Strategy $(game.current_strategy) vs you")
-        display("Turn $(game.turn)")
-        display("You chose $your_choice")
-        display("Opponent chose $opponent_choice")
-        display("Your score: $(game.your_score)")
-        display("Opponent score: $(game.opponent_score)")
-        display("Your history: $(game.your_history)")
-        display("Opponent history: $(game.opponent_history)")
+        println("Strategy $(game.current_strategy) vs you\n")
+        println("Turn $(game.turn)")
+        println("You chose $your_choice")
+        println("Opponent chose $opponent_choice\n")
+        println("Your score: $(game.your_score)")
+        println("Opponent score: $(game.opponent_score)\n")
+        println("Your history: ", game.your_history)
+        println("Opponent history: ", game.opponent_history)
 
     end
 
     # END OF MATCH
     if game.turn == game.turns_per_match
 
-        display("\nMatch finished against strategy $(game.current_strategy)")
-        display("Final score: $(game.your_score) vs $(game.opponent_score)")
+        println("\nMatch finished against strategy $(game.current_strategy)")
+        println("Final score: $(game.your_score) vs $(game.opponent_score)")
 
         push!(game.your_vs_strategy_scores, game.your_score)
         push!(game.strategy_vs_you_scores, game.opponent_score)
@@ -298,21 +301,22 @@ begin
     # END OF TOURNAMENT
     if game.current_strategy > length(strategies)
 
-        display("\nTOURNAMENT FINISHED\n")
+        println("\nTOURNAMENT FINISHED\n")
         total_score = sum(game.your_vs_strategy_scores)
-        display("Total score: $total_score")
+        println("Total score: $total_score")
     end
 
     # calculate rest of tournament (strategies vs strategies)
     if length(game.your_vs_strategy_scores) == length(strategies)
 
-        display("\nRunning strategy vs strategy matches...\n")
+        println("\nRunning strategy vs strategy matches...\n")
 
         n = length(strategies)
         strategy_scores = zeros(Int, n)
 
         for i in 1:n
             for j in i+1:n
+			#for j in 1:n
                 prev1 = nothing
                 prev2 = nothing
                 score1 = 0
@@ -339,14 +343,14 @@ begin
                 strategy_scores[i] += score1
                 strategy_scores[j] += score2
 
-                display("Match $(nameof(strategies[i])) vs $(nameof(strategies[j]))")
-                display("Score: $score1 vs $score2\n")
+                println("Match $(nameof(strategies[i])) vs $(nameof(strategies[j]))")
+                println("Score: $score1 vs $score2\n")
             end
         end
 
-        display("================================")
-        display("         FINAL RANKING ")
-        display("================================")
+        println("================================")
+        println("         FINAL RANKING ")
+        println("================================")
 
         names = String[]
         scores = Int[]
@@ -366,7 +370,7 @@ begin
         order = sortperm(scores, rev=true)
 
         for k in order
-            display("$(names[k]) → $(scores[k])")
+            println("$(names[k]) → $(scores[k])")
         end
 
     end
@@ -638,6 +642,7 @@ version = "17.4.0+2"
 # ╟─b00f0dc0-a067-4507-bfd5-36ae600d63b5
 # ╟─0a792571-0b43-49b2-bea3-8daf6a3dbd9c
 # ╟─f2b52ce7-73a5-42d3-8055-7cb02cc06f98
+# ╠═c0f34c37-7d82-4449-b400-b8e01d1e73b6
 # ╟─820a390f-2b9b-4098-a602-afd04f35af0e
 # ╟─af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 # ╠═6f73fb90-1fe2-11f1-0414-11d86a3ffab9
