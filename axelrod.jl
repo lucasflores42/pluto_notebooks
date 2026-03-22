@@ -17,7 +17,7 @@ macro bind(def, element)
 end
 
 # ╔═╡ 6f73fb90-1fe2-11f1-0414-11d86a3ffab9
-using PlutoUI
+using PlutoUI, Random
 
 # ╔═╡ b6147850-9dfa-4821-bb67-369482849241
 md"""
@@ -180,7 +180,8 @@ mutable struct GameState
     current_strategy::Int
     turn::Int
     turns_per_match::Int
-
+	strategy_order::Vector{Int}
+	
     your_vs_strategy_scores::Vector{Int}
 	strategy_vs_you_scores::Vector{Int}
 
@@ -195,7 +196,7 @@ if !@isdefined(game)
         String[], String[],
         0, 0,
         nothing, nothing,
-        1, 0, turns,
+        1, 0, turns, Int[],
         Int[], Int[],
         0, 0, 0
     )
@@ -216,8 +217,11 @@ begin
         game.your_previous_choice = nothing
         game.opponent_previous_choice = nothing
 
+        game.strategy_order = shuffle(1:length(strategies))   # random order
         game.current_strategy = 1
         game.turn = 0
+
+        game.turns_per_match = 10 + rand(-3:3)                # random turns
 
         empty!(game.your_vs_strategy_scores)
         empty!(game.strategy_vs_you_scores)
@@ -243,9 +247,10 @@ begin
     # play turn
     if your_choice !== nothing && game.current_strategy <= length(strategies)
 
-        r = strategies[game.current_strategy]
-        prob_c = r(game.opponent_previous_choice, game.your_previous_choice)
+        idx = game.strategy_order[game.current_strategy]  
+        r = strategies[idx]
 
+        prob_c = r(game.opponent_previous_choice, game.your_previous_choice)
         opponent_choice = rand() < prob_c ? "C" : "D"
 
         push!(game.your_history, your_choice)
@@ -265,7 +270,7 @@ begin
         println("Opponent chose $opponent_choice\n")
         println("Your score: $(game.your_score)")
         println("Opponent score: $(game.opponent_score)\n")
-        println("Your history: ", game.your_history)
+        println("Your history:     ", game.your_history)
         println("Opponent history: ", game.opponent_history)
 
     end
@@ -273,9 +278,13 @@ begin
     # END OF MATCH
     if game.turn == game.turns_per_match
 
-        println("\nMatch finished against strategy $(game.current_strategy)")
-        println("Final score: $(game.your_score) vs $(game.opponent_score)")
+        idx = game.strategy_order[game.current_strategy]
 
+       	println("\n================================")
+        println("Match finished against strategy $(game.current_strategy)")
+        println("Final score: $(game.your_score) vs $(game.opponent_score)")
+		println("================================")
+		
         push!(game.your_vs_strategy_scores, game.your_score)
         push!(game.strategy_vs_you_scores, game.opponent_score)
 
@@ -290,6 +299,8 @@ begin
 
         game.your_previous_choice = nothing
         game.opponent_previous_choice = nothing
+
+        game.turns_per_match = 10 + rand(-3:3)   # new random turns for next opponent
 
     end
 
@@ -309,21 +320,21 @@ begin
         n = length(strategies)
         strategy_scores = zeros(Int, n)
 
+		 game.turns_per_match = turns
+
         for i in 1:n
             for j in i+1:n
-			#for j in 1:n
+
                 prev1 = nothing
                 prev2 = nothing
                 score1 = 0
                 score2 = 0
 
                 for t in 1:game.turns_per_match
-                    # strategy i move
                     s1 = strategies[i]
                     prob1 = s1(prev1, prev2)
                     move1 = rand() < prob1 ? "C" : "D"
 
-                    # strategy j move
                     s2 = strategies[j]
                     prob2 = s2(prev2, prev1)
                     move2 = rand() < prob2 ? "C" : "D"
@@ -354,14 +365,13 @@ begin
         push!(names, "YOU")
         push!(scores, sum(game.your_vs_strategy_scores))
 
-        # add strategies
+        # add strategies (✅ correct names here)
         for i in 1:n
             total = strategy_scores[i] + game.strategy_vs_you_scores[i]
             push!(names, string(nameof(strategies[i])))
             push!(scores, total)
         end
 
-        # sort by score (descending)
         order = sortperm(scores, rev=true)
 
         for k in order
@@ -376,6 +386,7 @@ end
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 PlutoUI = "~0.7.79"
@@ -387,7 +398,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.2"
 manifest_format = "2.0"
-project_hash = "03bbe4aa2214ac7d2dde4202f5de35f2c8dbd025"
+project_hash = "790f4da38b414bee29910ae36933c588516d60b4"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
