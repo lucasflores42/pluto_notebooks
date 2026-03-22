@@ -26,17 +26,15 @@ md"""
 
 # ╔═╡ bbaed9d7-2d7f-44a9-9f2c-91d33049b6a3
 md"""
-Lets play a game!
+Let's play a game!
 
-You committed a crime with a friend, and both got arrested without enough evidence to convict for the full sentence in jail. Each of you are isolated and given the choice:
+You committed a crime with a friend, and both got arrested without enough evidence to convict for the full sentence in jail. Each of you is isolated and given the choices
 
-a) (Defect) Confess and testify against your friend, avoiding prison and framing him;
+- (Defect) Confess and testify against your friend, avoiding prison and framing him;
+- (Cooperate) Stay silent, and go to prison for a small time.
 
-b) (Cooperate) Stay silent, and go to prison for a small time.
-
-The problem is that your friend got the same deal, and if you stay silent you may get all the blame and a full sentence in jail.
-
-This is the famous Prisoner's Dilemma, and It's formally defined by the payoff matrix
+The problem is that your friend got the same deal, and if you stay silent, you may get all the blame and a full sentence in jail.
+This is the famous Prisoner's Dilemma, and it's formally defined by the payoff matrix
 """
 
 # ╔═╡ c49b57ff-790d-4b8e-b8e6-4c261b54b9f3
@@ -55,7 +53,7 @@ md"""
 md"""
 where each element is the number of jail time you get for a pair of choices. In this game, the best outcome you can get is to always defect and blame your friend, decreasing your jail time.
 
-But now let's consider that this game happens $n$ times. Now your friend can retaliate in the future, and maybe cooperation is viable in the long run. The Axelrod's tournament explores this scenario. And in this post, you will play this game against some of the most famous strategies proposed.
+But now let's consider that this game happens m times. Now your friend can retaliate in the future, and maybe cooperation is viable in the long run. Axelrod's tournament explores this scenario. In this post, you will play this game against some of the most famous strategies proposed.
 
 Good luck!
 
