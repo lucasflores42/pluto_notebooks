@@ -54,9 +54,6 @@ md"""
 where each element is the number of jail time you get for a pair of choices. In this game, the best outcome you can get is to always defect and blame your friend, decreasing your jail time.
 
 But now let's consider that this game happens m times. Now your friend can retaliate in the future, and maybe cooperation is viable in the long run. Axelrod's tournament explores this scenario. In this post, you will play this game against some of the most famous strategies proposed.
-
-Good luck!
-
 """
 
 # ╔═╡ f606151f-9519-41b6-a69e-ffe770fa7b90
