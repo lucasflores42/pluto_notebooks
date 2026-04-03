@@ -61,14 +61,14 @@ md"""
 ## Tournament
 """
 
+# ╔═╡ 611a2530-5632-4add-84e2-514e8fc9532f
+@bind reset CounterButton("Start / Reset")
+
 # ╔═╡ b00f0dc0-a067-4507-bfd5-36ae600d63b5
 @bind play_C CounterButton("Play C")
 
 # ╔═╡ 0a792571-0b43-49b2-bea3-8daf6a3dbd9c
 @bind play_D CounterButton("Play D")
-
-# ╔═╡ f2b52ce7-73a5-42d3-8055-7cb02cc06f98
-@bind reset CounterButton("Reset")
 
 # ╔═╡ af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 md"""
@@ -201,7 +201,7 @@ end
 
 # ╔═╡ 820a390f-2b9b-4098-a602-afd04f35af0e
 begin
-
+	
     # RESET TOURNAMENT
     if reset > game.last_reset
 
@@ -227,8 +227,11 @@ begin
         game.last_play_D = play_D
 
         game.last_reset = reset
-        println("Tournament reset.")
-
+        
+		#println("Tournament reset.")
+		println("Strategy 1 vs you\n")
+        println("Turn 1")
+        println("Choose C or D ")
     end
 
     # detect player move
@@ -358,11 +361,9 @@ begin
         names = String[]
         scores = Int[]
 
-        # add you
         push!(names, "YOU")
         push!(scores, sum(game.your_vs_strategy_scores))
 
-        # add strategies (✅ correct names here)
         for i in 1:n
             total = strategy_scores[i] + game.strategy_vs_you_scores[i]
             push!(names, string(nameof(strategies[i])))
@@ -642,9 +643,9 @@ version = "17.4.0+2"
 # ╟─c49b57ff-790d-4b8e-b8e6-4c261b54b9f3
 # ╟─c6919b05-b594-4ed2-8550-721e67ca1f14
 # ╟─f606151f-9519-41b6-a69e-ffe770fa7b90
+# ╟─611a2530-5632-4add-84e2-514e8fc9532f
 # ╟─b00f0dc0-a067-4507-bfd5-36ae600d63b5
 # ╟─0a792571-0b43-49b2-bea3-8daf6a3dbd9c
-# ╟─f2b52ce7-73a5-42d3-8055-7cb02cc06f98
 # ╟─820a390f-2b9b-4098-a602-afd04f35af0e
 # ╟─af2fe049-20f5-4b90-9e1a-671b12f8e7fc
 # ╠═6f73fb90-1fe2-11f1-0414-11d86a3ffab9
