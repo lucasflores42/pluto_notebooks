@@ -34,7 +34,7 @@ You committed a crime with a friend, and both got arrested without enough eviden
 - (Cooperate) Stay silent, and go to prison for a small time.
 
 The problem is that your friend got the same deal, and if you stay silent, you may get all the blame and a full sentence in jail.
-This is the famous Prisoner's Dilemma, and it's formally defined by the payoff matrix
+This is the famous Prisoner's Dilemma, and it's defined by the payoff matrix
 """
 
 # ╔═╡ c49b57ff-790d-4b8e-b8e6-4c261b54b9f3
@@ -43,7 +43,7 @@ md"""
 \begin{array}{c|cc}
       & C & D \\
     \hline
-  C & -5 & -10 \\
+  C & -3 & -10 \\
   D & 0 & -7
 \end{array}
 ```
@@ -53,7 +53,7 @@ md"""
 md"""
 where each element is the number of jail time you get for a pair of choices. In this game, the best outcome you can get is to always defect and blame your friend, decreasing your jail time.
 
-But now let's consider that this game happens m times. Now your friend can retaliate in the future, and maybe cooperation is viable in the long run. Axelrod's tournament explores this scenario. In this post, you will play this game against some of the most famous strategies proposed.
+But now let's consider that this game happens m times. Now your friend can retaliate in the future, and maybe cooperation is viable in the long run. Axelrod's tournament explores this scenario. In this post, you will play this game against six of the most famous strategies proposed, each during around 10 rounds. 
 """
 
 # ╔═╡ f606151f-9519-41b6-a69e-ffe770fa7b90
@@ -143,7 +143,7 @@ strategies = [ALLC, ALLD, RANDOM, GRIM, TFT, WSLS]
 # ╔═╡ 9bebaa7d-f412-42e0-b66e-aa2e7ba56a96
 function payoff(a,b)
 
-	R, S, T, P = 5, 0, 10, 3 
+	R, S, T, P = 7, 0, 10, 3 
 	
 	if a == "C" && b == "C"
 		score = R
